@@ -19,16 +19,20 @@
  *
  */
 
+const CameraConstants = require("./CameraConstants");
+
 /**
  * Encapsulates all video capture operation configuration options.
  */
 var CaptureVideoOptions = function () {
-    // Upper limit of videos user can record. Value must be equal or greater than 1.
-    this.limit = 1;
-    // Maximum duration of a single video clip in seconds.
-    this.duration = 0;
-    // Video quality parameter, 0 means low quality, suitable for MMS messages, and value 1 means high quality.
-    this.quality = 1;
+  // Upper limit of videos user can record. Value must be equal or greater than 1.
+  this.limit = 1;
+  // Maximum duration of a single video clip in seconds.
+  this.duration = 0;
+  // Video quality parameter, 0 means low quality, suitable for MMS messages, and value 1 means high quality.
+  this.quality = 1;
+
+  this.cameraDirection = CameraConstants.CAMERA_BACK;
 };
 
 module.exports = CaptureVideoOptions;

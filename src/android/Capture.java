@@ -85,6 +85,8 @@ public class Capture extends CordovaPlugin {
     private int numPics;                            // Number of pictures before capture activity
     private Uri imageUri;
 
+    private boolean useFrontEndCamera = false;
+
 //    public void setContext(Context mCtx)
 //    {
 //        if (CordovaInterface.class.isInstance(mCtx))
@@ -129,6 +131,10 @@ public class Capture extends CordovaPlugin {
         }
 
         JSONObject options = args.optJSONObject(0);
+
+        if (options != null && options.has("cameraDirection")) {
+            this.useFrontEndCamera = options.getInt("cameraDirection") == 1 ? true : false;
+        }
 
         if (action.equals("captureAudio")) {
             this.captureAudio(pendingRequests.createRequest(CAPTURE_AUDIO, options, callbackContext));
@@ -284,6 +290,11 @@ public class Capture extends CordovaPlugin {
 
             intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
 
+            if (this.useFrontEndCamera) {
+                intent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+                intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+            }
+
             this.cordova.startActivityForResult((CordovaPlugin) this, intent, req.requestCode);
         }
     }
@@ -306,6 +317,12 @@ public class Capture extends CordovaPlugin {
                 intent.putExtra("android.intent.extra.durationLimit", req.duration);
                 intent.putExtra("android.intent.extra.videoQuality", req.quality);
             }
+
+            if (this.useFrontEndCamera) {
+                intent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+                intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+            }
+
             this.cordova.startActivityForResult((CordovaPlugin) this, intent, req.requestCode);
         }
     }
